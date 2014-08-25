@@ -11,7 +11,7 @@ import org.gradle.api.Task
  */
 class PlayPlugin implements Plugin<Project> {
 
-    public static final String PLAY_GROUP = "playPublisher";
+    public static final String PLAY_GROUP = "Play publisher";
 
     public static final String CREATE_EDIT_TASK_NAME = "playCreateEdit";
     public static final String CLOSE_EDIT_TASK_NAME = "playCloseEdit";
@@ -19,7 +19,7 @@ class PlayPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
-        project.extensions.add("play", PlayPluginExtension);
+        project.extensions.add("playPublisher", PlayPluginExtension);
         configureCreateEdit(project)
         configureCloseEdit(project)
         configureDependencies(project)
@@ -32,7 +32,7 @@ class PlayPlugin implements Plugin<Project> {
         createEdit.setDescription("Start new google play edit")
         createEdit.setGroup(PLAY_GROUP);
         project.afterEvaluate {
-            PlayPluginExtension extension = project.play;
+            PlayPluginExtension extension = project.playPublisher;
             createEdit.applicationName = extension.applicationName;
             createEdit.packageName = extension.packageName
             createEdit.serviceAccountEmail = extension.serviceAccountEmail
