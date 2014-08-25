@@ -37,7 +37,7 @@ Gradle plugin for modifying google play app listings.
         track TRACK_ALPHA | TRACK_BETA | TRACK_ROLLOUT | TRACK_PRODUCTION
         userFraction 0.05 | 0.1 | 0.2 | 0.5 // only if track is set to TRACK_ROLLOUT
         listings = [
-                (Locale.US.toString()): "Whats new for us_EN language"
+                (Locale.US.toString()): "What's new for us_EN language"
         ]
     }
 
