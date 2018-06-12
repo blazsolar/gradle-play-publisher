@@ -1,0 +1,91 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//
+//            from components.java
+//
+//            artifact sourceJar {
+//                classifier "sources"
+//            }
+//
+//            artifact javadocJar {
+//                classifier "javadoc"
+//            }
+//
+//            pom.withXml {
+//                asNode().appendNode("name", POM_NAME)
+//                asNode().appendNode("description", POM_DESCRIPTION)
+//                asNode().appendNode("url", POM_URL)
+//                asNode().appendNode("inceptionYear", POM_INCEPTION_YEAR)
+//
+//                Node developers = asNode().appendNode("developers")
+//                Node developer = developers.appendNode("developer")
+//                developer.appendNode("id", "blazsolar")
+//                developer.appendNode("name", "Blaz Solar")
+//                developer.appendNode("email", "me@blaz.solar")
+//                developer.appendNode("timezone", "Europe/Ljubljana")
+//
+//                Node issue = asNode().appendNode("issueManagement")
+//                issue.appendNode("system", "Github")
+//                issue.appendNode("url", "https://github.com/blazsolar/gradle-play-publisher/issues")
+//
+//                Node scm = asNode().appendNode("scm")
+//                scm.appendNode("connection", POM_SCM_CONNECTION)
+//                scm.appendNode("developerConnection", POM_SCM_DEV_CONNECTION)
+//                scm.appendNode("tag", "HEAD")
+//                scm.appendNode("url", POM_SCM_URL)
+//
+//            }
+//
+//            ext.repo = 'artifactory'
+//
+//        }
+//
+//    }
+//}
+
+
+pluginBundle {
+    website = POM_URL
+    vcsUrl = POM_SCM_URL
+    description = POM_DESCRIPTION
+    tags = ['android', 'play', 'publish']
+
+    plugins {
+        versionPlugin {
+            id = 'solar.blaz.play-publisher'
+            displayName = 'Android Play Publisher'
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+
+    configurations = ['published', 'archives']
+
+    pkg {
+        repo = 'gradle-plugins'
+        name = projectName
+        desc = POM_DESCRIPTION
+        websiteUrl = POM_URL
+        issueTrackerUrl = "https://github.com/blazsolar/gradle-play-publisher/issues"
+        vcsUrl = 'https://github.com/blazsolar/gradle-play-publisher.git'
+        licenses = ['MIT']
+        labels = ['google-play', 'publisher']
+    }
+}

@@ -6,9 +6,9 @@ Gradle plugin for modifying google play app listings.
 
 ### Apply plugin
 
-#### Gradle 2.1 or newer
+#### Gradle 4.8 or newer
     plugins {
-        id "com.github.blazsolar.play-publisher" version "<version>"
+        id "solar.blaz.play-publisher" version "1.0"
     }
     
 #### Gradle 2.0 or older
@@ -17,29 +17,35 @@ Gradle plugin for modifying google play app listings.
             jcentral()
         }
         dependencies {
-            classpath 'com.github.blazsolar.gradle:play-publisher:<version>'
+            classpath 'solar.blaz.gradle:play-publisher:1.0'
         }
     }
 
-    apply plugin: 'com.github.blazsolar.play-publisher'
+    apply plugin: 'solar.blaz.play-publisher'
 
 ### Configuration
     playPublisher {
-        applicationName "<company><app_name>/<version>"
-        packageName "<app_package_name>"
-        serviceAccountEmail "<service_account_email>"
-        keyP12 "<service_account_key>"
+    
+        artifacts {
+            <artifact_name> {
+                appId = "<app id>" // Application id of apps to publish
+                clientSecretJson = file("<play_publish.json>") // path to play publish file
+                action = "complete" // One of "completed", "inProgress" or "draft"
+                userFraction = 0.05 // if action is inProgress
+                track = "production" // one of "production", "beta", "alpha", "internal"
+                listingDir = file(".listings/") // Dirictory to listings information
+            }
+        }
+        
     }
 
-### Add upload app task
-    task uploadApk(type: com.github.blazsolar.gradle.tasks.UploadApkTask) {
-        apkPath "<path to apk file>"
-        track TRACK_ALPHA | TRACK_BETA | TRACK_ROLLOUT | TRACK_PRODUCTION
-        userFraction 0.05 | 0.1 | 0.2 | 0.5 // only if track is set to TRACK_ROLLOUT
-        listings = [
-                (Locale.US.toString()): "What's new for us_EN language"
-        ]
-    }
+### Publish artifact
+
+`./gradlew playUpload<artifact_name>`
+
+### Multi project configuration
+
+TBD
 
 ## License
     
