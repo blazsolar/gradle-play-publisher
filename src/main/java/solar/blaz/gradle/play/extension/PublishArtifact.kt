@@ -5,10 +5,16 @@ import java.io.File
 import javax.inject.Inject
 
 open class PublishArtifact @Inject constructor(val name: String) {
-    var clientSecretJson: File? = null
-    var appId: String? = null
-    var action: String = TrackTask.ACTION_RELEASE
-    var track: String? = TrackTask.TRACK_PRODUCTION
-    var userFraction: Double? = null
-    var listingDir: File? = null
+    public var clientSecretJson: File? = null
+    public var appId: String? = null
+    public var action: String = TrackTask.ACTION_RELEASE
+    public var track: String? = TrackTask.TRACK_PRODUCTION
+    public var userFraction: Double? = null
+    public var listingDir: File? = null
+
+    override fun toString(): String {
+        return "PublishArtifact(name='$name', clientSecretJson=$clientSecretJson, appId=$appId, action='$action', track=$track, userFraction=$userFraction, listingDir=$listingDir)"
+    }
+
+
 }

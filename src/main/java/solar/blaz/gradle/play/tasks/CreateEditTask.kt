@@ -17,6 +17,7 @@ open class CreateEditTask @Inject constructor(applicationId: String, artifactNam
 
     override fun perform() {
         // Create the API service.
+        println(clientSecretJson)
         val edits = AndroidPublisherHelper.init(applicationName, clientSecretJson!!).edits()
 
         // Create a new edit to make changes.

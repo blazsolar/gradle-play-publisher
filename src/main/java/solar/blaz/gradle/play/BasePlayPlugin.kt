@@ -11,7 +11,6 @@ import solar.blaz.gradle.play.tasks.TrackTask
 
 class BasePlayPlugin : Plugin<Project> {
 
-    // TODO not var
     val extensions: PlayPluginExtension
         get() = project.extensions.getByType(PlayPluginExtension::class.java)
 
@@ -53,7 +52,7 @@ class BasePlayPlugin : Plugin<Project> {
             closeEditTask.dependsOn(trackTask)
 
             val tasks = ArtifactData(createEditTask, trackTask, closeEditTask)
-            artifactData[name] = tasks// TODO thread safe
+            artifactData[name] = tasks // TODO thread safe
             return tasks
         }
     }

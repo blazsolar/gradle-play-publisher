@@ -8,7 +8,7 @@ open class PlayPluginExtension(project: Project) {
 
     val artifacts: NamedDomainObjectContainer<PublishArtifact> = project.container(PublishArtifact::class.java)
 
-    fun artifacts(closure: Closure<*>): NamedDomainObjectContainer<PublishArtifact> {
+    fun artifacts(closure: Closure<Any?>): NamedDomainObjectContainer<PublishArtifact> {
         return artifacts.configure(closure)
     }
 }

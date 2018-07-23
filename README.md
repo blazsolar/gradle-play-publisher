@@ -8,7 +8,7 @@ Gradle plugin for modifying google play app listings.
 
 #### Gradle 4.8 or newer
     plugins {
-        id "solar.blaz.play-publisher" version "1.0"
+        id "solar.blaz.play-publisher" version "0.4.1"
     }
     
 #### Gradle 2.0 or older
@@ -17,7 +17,7 @@ Gradle plugin for modifying google play app listings.
             jcentral()
         }
         dependencies {
-            classpath 'solar.blaz.gradle:play-publisher:1.0'
+            classpath 'solar.blaz.gradle:play-publisher:0.4.1'
         }
     }
 
@@ -30,7 +30,7 @@ Gradle plugin for modifying google play app listings.
             <artifact_name> {
                 appId = "<app id>" // Application id of apps to publish
                 clientSecretJson = file("<play_publish.json>") // path to play publish file
-                action = "complete" // One of "completed", "inProgress" or "draft"
+                action = "completed" // One of "completed", "inProgress" or "draft"
                 userFraction = 0.05 // if action is inProgress
                 track = "production" // one of "production", "beta", "alpha", "internal"
                 listingDir = file(".listings/") // Dirictory to listings information

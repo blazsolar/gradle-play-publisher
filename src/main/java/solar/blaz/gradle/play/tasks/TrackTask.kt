@@ -23,7 +23,7 @@ open class TrackTask @Inject constructor(applicationId: String, artifact: String
                 .setName("Play Publisher release: " + getArtifactData().versionCodes.joinToString())
                 .setStatus(action)
                 .setVersionCodes(getArtifactData().versionCodes)
-                .setUserFraction(null)
+                .setUserFraction(userFraction)
                 .setReleaseNotes(getReleaseNotes())
 
         val t = Track()
@@ -59,7 +59,7 @@ open class TrackTask @Inject constructor(applicationId: String, artifact: String
     }
 
     companion object {
-        private val LOG = Logging.getLogger(TrackTask.javaClass)
+        private val LOG = Logging.getLogger(TrackTask::class.java)
 
         public val TRACK_ALPHA = "alpha"
         public val TRACK_BETA = "beta"

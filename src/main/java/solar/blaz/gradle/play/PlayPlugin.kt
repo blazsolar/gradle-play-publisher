@@ -15,7 +15,6 @@ class PlayPlugin : Plugin<Project> {
             throw IllegalStateException("Play Publish plugin only works with Android application projects but \"" + project.name + "\" is none")
         }
 
-
         val parent = project.parent
         val basePlugin: Any
         basePlugin = if (parent != null && parent.plugins.hasPlugin(BasePlayPlugin::class.java)) {
@@ -24,14 +23,14 @@ class PlayPlugin : Plugin<Project> {
             project.plugins.apply(BasePlayPlugin::class.java)
         }
 
-
-        createTasks(project, basePlugin)
+        project.afterEvaluate {
+            createTasks(it, basePlugin)
+        }
     }
 
     private fun createTasks(project: Project, basePlugin: BasePlayPlugin) {
 
         val extensions = basePlugin.extensions
-
 
         extensions.artifacts.all { artifact ->
             val baseTasks = basePlugin.getVariantTasks(artifact)
