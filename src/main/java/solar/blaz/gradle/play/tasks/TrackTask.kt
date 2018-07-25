@@ -19,8 +19,13 @@ open class TrackTask @Inject constructor(applicationId: String, artifact: String
 
     private fun assignApkTrack() {
 
+        var name = "Play Publisher release: " + getArtifactData().versionCodes.joinToString()
+        if (name.length > 50) {
+            name = name.substring(0, 50)
+        }
+
         val release = TrackRelease()
-                .setName("Play Publisher release: " + getArtifactData().versionCodes.joinToString())
+                .setName(name)
                 .setStatus(action)
                 .setVersionCodes(getArtifactData().versionCodes)
                 .setUserFraction(userFraction)
