@@ -5,11 +5,11 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.client.repackaged.com.google.common.base.Preconditions
-import com.google.api.client.repackaged.com.google.common.base.Strings
 import com.google.api.services.androidpublisher.AndroidPublisher
 import com.google.api.services.androidpublisher.AndroidPublisher.Builder
 import com.google.api.services.androidpublisher.AndroidPublisherScopes
+import com.google.common.base.Preconditions
+import com.google.common.base.Strings
 import org.apache.commons.logging.LogFactory
 import java.io.File
 import java.io.FileInputStream
