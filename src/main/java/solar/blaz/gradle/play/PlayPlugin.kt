@@ -74,6 +74,6 @@ class PlayPlugin : Plugin<Project> {
         }
 
         val PLAY_GROUP = "Play Publisher"
-        private val UPLOAD_APK_TASK_NAME_PREFIX = "playUploadApk"
+        private const val UPLOAD_APK_TASK_NAME_PREFIX = "playUploadApk"
     }
 }
