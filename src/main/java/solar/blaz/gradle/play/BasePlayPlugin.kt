@@ -3,6 +3,7 @@ package solar.blaz.gradle.play
 import com.google.api.services.androidpublisher.AndroidPublisher
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.TaskProvider
 import solar.blaz.gradle.play.extension.PlayPluginExtension
 import solar.blaz.gradle.play.extension.PublishArtifact
 import solar.blaz.gradle.play.tasks.CloseEditTask
@@ -33,23 +34,30 @@ class BasePlayPlugin : Plugin<Project> {
             val appId = publishArtifact.appId!!
             val artifactName = name.capitalize()
 
-            val uploadTask = project.tasks.create(UPLOAD_TASK_NAME_PREFIX + artifactName) {
-                it.description = "Upload artifact configuration"
-                it.group = PLAY_GROUP
-            }
             val createEditTask = configureCreateEdit(project, publishArtifact, artifactName, appId)
             val closeEditTask = configureCloseEdit(project, artifactName, appId, name)
 
-            closeEditTask.dependsOn(createEditTask)
-            uploadTask.dependsOn(closeEditTask)
-
-            val trackTask = project.tasks.create(TRACK_TASK_NAME_PREFIX + artifactName,
-                    TrackTask::class.java, appId, name, publishArtifact.action, publishArtifact.track).apply {
-                userFraction = publishArtifact.userFraction
-                listingDir = publishArtifact.listingDir
+            closeEditTask.configure {
+                it.dependsOn(createEditTask)
             }
-            trackTask.dependsOn(createEditTask)
-            closeEditTask.dependsOn(trackTask)
+            project.tasks.register(UPLOAD_TASK_NAME_PREFIX + artifactName) {
+                it.description = "Upload artifact configuration"
+                it.group = PLAY_GROUP
+                it.dependsOn(closeEditTask)
+            }
+
+            val trackTask = project.tasks.register(TRACK_TASK_NAME_PREFIX + artifactName,
+                    TrackTask::class.java, appId, name, publishArtifact.action, publishArtifact.track).apply {
+                configure {
+                    it.userFraction = publishArtifact.userFraction
+                    it.listingDir = publishArtifact.listingDir
+                    it.dependsOn(createEditTask)
+                }
+            }
+
+            closeEditTask.configure {
+                it.dependsOn(trackTask)
+            }
 
             val tasks = ArtifactData(createEditTask, trackTask, closeEditTask)
             artifactData[name] = tasks // TODO thread safe
@@ -62,29 +70,34 @@ class BasePlayPlugin : Plugin<Project> {
     }
 
     private fun configureCreateEdit(project: Project, publishArtifact: PublishArtifact,
-                                    artifactName: String, appId: String): CreateEditTask {
+                                    artifactName: String, appId: String): TaskProvider<CreateEditTask> {
+
 
         // TODO add version info to project name
-        return project.tasks.create(CREATE_EDIT_TASK_NAME_PREFIX + artifactName,
+        return project.tasks.register(CREATE_EDIT_TASK_NAME_PREFIX + artifactName,
                 CreateEditTask::class.java, appId, publishArtifact.name, project.rootProject.name)
                 .apply {
-                    clientSecretJson = publishArtifact.clientSecretJson
-                    description = "Start new Google Play edit"
+                    configure {
+                        it.clientSecretJson = publishArtifact.clientSecretJson
+                        it.description = "Start new Google Play edit"
+                    }
                 }
 
     }
 
-    private fun configureCloseEdit(project: Project, variantName: String, appId: String, artifact: String): CloseEditTask {
+    private fun configureCloseEdit(project: Project, variantName: String, appId: String, artifact: String): TaskProvider<CloseEditTask> {
 
-        return project.tasks.create(CLOSE_EDIT_TASK_NAME_PREFIX + variantName,
+        return project.tasks.register(CLOSE_EDIT_TASK_NAME_PREFIX + variantName,
                 CloseEditTask::class.java, appId, artifact).apply {
-            description = "Commits changes to google play"
+            configure {
+                it.description = "Commits changes to google play"
+            }
         }
 
     }
 
-    inner class ArtifactData(val createEditTask: CreateEditTask, val trackTask: TrackTask, val closeEditTask: CloseEditTask) {
-
+    inner class ArtifactData(val createEditTask: TaskProvider<CreateEditTask>, val trackTask: TaskProvider<TrackTask>,
+                             val closeEditTask: TaskProvider<CloseEditTask>) {
         var edits: AndroidPublisher.Edits? = null
         var editId: String? = null
         val versionCodes = mutableListOf<Long>()

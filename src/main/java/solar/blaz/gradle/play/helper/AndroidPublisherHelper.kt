@@ -29,7 +29,7 @@ import java.security.GeneralSecurityException
 object AndroidPublisherHelper {
 
     private val log = LogFactory.getLog(AndroidPublisherHelper::class.java)
-    val mimE_TYPE_APK = "application/vnd.android.package-archive"
+    val MIME_TYPE_APK = "application/vnd.android.package-archive"
     /** Global instance of the JSON factory.  */
     private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
     /** Global instance of the HTTP transport.  */
