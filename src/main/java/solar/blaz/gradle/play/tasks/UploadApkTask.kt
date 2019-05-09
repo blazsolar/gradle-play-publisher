@@ -1,5 +1,6 @@
 package solar.blaz.gradle.play.tasks
 
+import com.android.build.OutputFile
 import com.google.api.client.http.FileContent
 import com.google.api.services.androidpublisher.model.Apk
 import org.gradle.api.logging.Logging
@@ -8,7 +9,7 @@ import solar.blaz.gradle.play.helper.AndroidPublisherHelper
 import java.io.File
 import javax.inject.Inject
 
-open class UploadApkTask @Inject constructor(applicationId: String, artifactName: String, @get:InputFile private val apkFile: File)
+open class UploadApkTask @Inject constructor(applicationId: String, artifactName: String, private val apkFile: OutputFile)
     : PlayEditTask(applicationId, artifactName) {
 
     override fun perform() {
@@ -18,7 +19,7 @@ open class UploadApkTask @Inject constructor(applicationId: String, artifactName
 
     private fun uploadApk(): Apk {
         // Upload new apk to developer console
-        val file = FileContent(AndroidPublisherHelper.mimE_TYPE_APK, apkFile)
+        val file = FileContent(AndroidPublisherHelper.MIME_TYPE_APK, apkFile.outputFile)
         val uploadRequest = requestEdits()
                 .apks()
                 .upload(applicationId, requestEditId(), file)

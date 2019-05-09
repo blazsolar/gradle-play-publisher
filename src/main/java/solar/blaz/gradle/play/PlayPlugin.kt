@@ -58,11 +58,17 @@ class PlayPlugin : Plugin<Project> {
             val outputNamePostfix = output.filterTypes.joinToString("") { it.capitalize() }
             val tasksName = UPLOAD_APK_TASK_NAME_PREFIX + artifactName + output.name + outputNamePostfix
 
-            val uploadTask = project.tasks.create(tasksName, UploadApkTask::class.java, appId, artifact.name, output.outputFile)
+            val uploadTask = project.tasks.register(tasksName, UploadApkTask::class.java, appId, artifact.name, output)
 
-            uploadTask.dependsOn(variant.assemble)
-            uploadTask.dependsOn(createEditTask)
-            baseTasks.trackTask.dependsOn(uploadTask)
+            uploadTask.configure {
+                it.dependsOn(variant.assembleProvider)
+                it.dependsOn(createEditTask)
+
+            }
+
+            baseTasks.trackTask.configure {
+                it.dependsOn(uploadTask)
+            }
         }
 
     }
