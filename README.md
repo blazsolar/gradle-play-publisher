@@ -8,7 +8,7 @@ Gradle plugin for modifying google play app listings.
 
 #### Gradle 4.8 or newer
     plugins {
-        id "solar.blaz.play-publisher" version "0.4.3"
+        id "solar.blaz.play-publisher" version "0.4.4"
     }
     
 #### Gradle 2.0 or older
@@ -17,7 +17,7 @@ Gradle plugin for modifying google play app listings.
             jcentral()
         }
         dependencies {
-            classpath 'solar.blaz.gradle:play-publisher:0.4.3'
+            classpath 'solar.blaz.gradle:play-publisher:0.4.4'
         }
     }
 
